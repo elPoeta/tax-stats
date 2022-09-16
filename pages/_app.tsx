@@ -1,8 +1,22 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import "../styles/globals.css";
+import type { AppProps } from "next/app";
+import { ThemeProvider } from "../context/theme/ThemeProvider";
+
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { Layout } from "../components/layout/Layout";
+import { Header } from "../components/header/Header";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <ThemeProvider>
+      <Layout>
+        <Header />
+        <Component {...pageProps} />
+      </Layout>
+      <ToastContainer />
+    </ThemeProvider>
+  );
 }
 
-export default MyApp
+export default MyApp;

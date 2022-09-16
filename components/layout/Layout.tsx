@@ -1,7 +1,11 @@
-import React from 'react'
+import React from "react";
+import HeadBase from "../common/HeadBase";
 
-export const Layout = () => {
+export const Layout = (props: { children: any }) => {
   return (
-    <div>Layout</div>
-  )
-}
+    <>
+      <HeadBase title={`Tax Stats ${new Date().getFullYear()}`} />
+      {props.children}
+    </>
+  );
+};
