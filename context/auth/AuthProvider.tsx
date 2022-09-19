@@ -19,7 +19,7 @@ export const AuthProvider = ({children}:IProps) => {
       if (event === 'SIGNED_OUT') {
         dispatch({ type: authActions.SIGN,  data:{ authorized: false }});
       }
-    })
+    });
     checkUser();
     return () => {
       if(!authListener) return;
