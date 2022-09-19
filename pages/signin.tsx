@@ -14,7 +14,6 @@ const Signin = () => {
   }
   const handleSubmit = (ev:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     ev.preventDefault();
-    console.log(formData)
     signIn();
   }
 
