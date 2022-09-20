@@ -12,3 +12,12 @@
     @apply dark:bg-slate-900 bg-white dark:text-gray-200 text-slate-800;
   }
 }
+
+.menu-glassmorphism {
+  background: rgb(165, 165, 165, 0.4);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}

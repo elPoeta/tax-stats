@@ -7,7 +7,7 @@ const styles = {
 export const Header = () => {
   return (
     <header className={styles.headerBar}>
-     <h1>Tax stats</h1>
+     <h1 className='text-2xl font-bold lg:text-4xl'>Tax stats</h1>
      <Navbar />      
     </header>
   )
