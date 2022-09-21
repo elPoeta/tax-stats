@@ -1,10 +1,11 @@
 import { NextApiRequest, NextPage } from "next"
+import Link from "next/link"
 import supabase from "../supabase/supabaseClient"
 
 const Home: NextPage = () => {
   return (
     <div className="container">
-       Test
+       <Link href='/newtax'><a>New</a></Link>
     </div>
   )
 }
