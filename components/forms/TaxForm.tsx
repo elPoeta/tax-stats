@@ -27,9 +27,8 @@ export const TaxForm = ({ taxTypes}:{ taxTypes: any[]}) => {
 
   const handleSubmit  = async (ev:React.MouseEvent<HTMLFormElement, MouseEvent>) => {
     ev.preventDefault();
-    console.log(formData)
     const {amount, date,taxTypeId} = formData;
-    if(!amount || !taxTypeId || !date) {
+    if(!amount || !taxTypeId || !date || parseFloat(amount.toString()) == 0) {
       setFormError('Please fill in all the fields correctly.')
       return;
     }
