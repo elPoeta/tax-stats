@@ -12,8 +12,7 @@ const styles = {
 const Signin = () => {
   const { state:{ authorized } } = useAuth();
   const [formData, setFormData] = useState({ email: '', password: ''});
-  const [hasError, setHasError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [formError, setFormError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -32,11 +31,10 @@ const Signin = () => {
     ev.preventDefault();
     const {email, password} = formData;
     if(email === '' || password === '') {
-      setHasError(true);
-      setErrorMessage('Email or password is empty');
+      setFormError('Email or password is empty');
       return;    
     }
-    setHasError(false);
+    setFormError(null);
     signIn();
   }
 
@@ -48,8 +46,9 @@ const Signin = () => {
     });
     error ? console.log(error) : console.log(user, session);
     if(error) {
-       setHasError(true);
+       setFormError(error.message);
     } else {
+       setFormError(null);
        router.push('/')   
     }
     }
@@ -58,7 +57,7 @@ const Signin = () => {
     <div className='w-[90%] mx-auto'>
       <h2 className={styles.title}>Sign-In</h2>
       <form className={styles.form}>
-        <p className={`text-red-600 text-xl ${!hasError ? 'hidden' : ''}`}>{errorMessage}</p>
+        {formError && <p className='text-red-600 text-xl'>{formError}</p>}
         <input className={styles.inputs} type="email" id="email" name="email" value={formData.email} onChange={handleChange}  placeholder="Enter an email..." required />
         <input className={styles.inputs} type="password" id="password" name="password" value={formData.password} onChange={handleChange}  placeholder="Enter a pasword..." required />
         <button className={styles.button} onClick={handleSubmit}>Sign-in</button>
