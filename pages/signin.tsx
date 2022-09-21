@@ -17,7 +17,7 @@ const Signin = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if(authorized) router.push('/tax')
+    if(authorized) router.push('/')
   },[authorized, router]);
 
   const handleChange = (ev:React.ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +50,7 @@ const Signin = () => {
     if(error) {
        setHasError(true);
     } else {
-       router.push('/tax')   
+       router.push('/')   
     }
     }
 
