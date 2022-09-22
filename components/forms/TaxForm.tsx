@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { ITaxTypes } from '../../interfaces/ITaxTypes';
 import supabase from '../../supabase/supabaseClient';
 import { getMonth } from '../../utils/getMonth';
 
@@ -13,7 +14,7 @@ const initialState = {
   amount: 0
 }
 
-export const TaxForm = ({ taxTypes}:{ taxTypes: any[]}) => {
+export const TaxForm = ({ taxTypes}:{ taxTypes: ITaxTypes[]}) => {
   const [formData, setFormData] = useState(initialState);
   const [formError, setFormError] = useState<string | null>(null);
 
