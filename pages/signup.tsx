@@ -15,7 +15,6 @@ const Signup = () => {
   }
   const handleSubmit = (ev:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     ev.preventDefault();
-    console.log(formData)
     signUp();
   }
 
@@ -31,7 +30,6 @@ const Signup = () => {
 
   useEffect(() => {
     const isEnable = process.env.NEXT_PUBLIC_ENABLE_REGISTER === 'true';
-    console.log(">>> ",isEnable)
     setEnable(isEnable);
   },[enable]);
 
