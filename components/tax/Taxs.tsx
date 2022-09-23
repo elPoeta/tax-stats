@@ -1,9 +1,12 @@
+import Link from "next/link";
 import { ITaxTypes } from "../../interfaces/ITaxTypes";
 import { TaxItem } from "./TaxItem";
 
 export const Taxs = ({ taxTypes }: { taxTypes: ITaxTypes[] }) => {
   const getIcon = (id: number): string => {
     switch (id) {
+      case 0:
+        return "CalendarDaysIcon";
       case 1:
         return "CalculatorIcon";
       case 2:
@@ -31,12 +34,17 @@ export const Taxs = ({ taxTypes }: { taxTypes: ITaxTypes[] }) => {
       <h2 className="p-4 text-2xl text-center font-bold">Tax</h2>
       <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:container lg:my-0 lg:mx-auto p-2">
         {taxTypes.map((taxType) => (
-          <TaxItem
-            key={taxType.id}
-            name={taxType.name}
-            icon={getIcon(taxType.id)}
-          />
+          <Link key={taxType.id} href={`/tax/${taxType.id}`}>
+            <a>
+              <TaxItem name={taxType.name} icon={getIcon(taxType.id)} />
+            </a>
+          </Link>
         ))}
+        <Link key={0} href="/tax/0">
+          <a>
+            <TaxItem name="All" icon={getIcon(0)} />
+          </a>
+        </Link>
       </div>
     </section>
   );
