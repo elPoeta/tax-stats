@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify';
 import { useAuth } from '../context/auth/useAuth';
+import { useTheme } from '../context/theme/useTheme';
 import supabase from '../supabase/supabaseClient';
 
 const styles = {
@@ -11,8 +13,8 @@ const styles = {
 }
 const Signin = () => {
   const { state:{ authorized } } = useAuth();
+  const {state:{ colorTheme }} = useTheme();
   const [formData, setFormData] = useState({ email: '', password: ''});
-  const [formError, setFormError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -31,10 +33,12 @@ const Signin = () => {
     ev.preventDefault();
     const {email, password} = formData;
     if(email === '' || password === '') {
-      setFormError('Email or password is empty');
+      toast.error('Email or password is empty',{
+        theme: colorTheme === 'dark' ? 'dark' : 'light',
+        autoClose: 3000
+      });
       return;    
     }
-    setFormError(null);
     signIn();
   }
 
@@ -46,18 +50,19 @@ const Signin = () => {
     });
     error ? console.log(error) : console.log(user, session);
     if(error) {
-       setFormError(error.message);
+      toast.error(error.message,{
+        theme: colorTheme === 'dark' ? 'dark' : 'light',
+        autoClose: 3000
+      })
     } else {
-       setFormError(null);
        router.push('/')   
     }
     }
 
   return (
-    <div className='w-[90%] mx-auto'>
+    <div className='container mx-auto w-[90%] md:w-[70%] lg:w-[40%]'>
       <h2 className={styles.title}>Sign-In</h2>
       <form className={styles.form}>
-        {formError && <p className='text-red-600 text-xl'>{formError}</p>}
         <input className={styles.inputs} type="email" id="email" name="email" value={formData.email} onChange={handleChange}  placeholder="Enter an email..." required />
         <input className={styles.inputs} type="password" id="password" name="password" value={formData.password} onChange={handleChange}  placeholder="Enter a pasword..." required />
         <button className={styles.button} onClick={handleSubmit}>Sign-in</button>
