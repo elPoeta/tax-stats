@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { toast } from 'react-toastify';
+import { useTheme } from '../../context/theme/useTheme';
 import { ITaxTypes } from '../../interfaces/ITaxTypes';
 import supabase from '../../supabase/supabaseClient';
 import { getMonth } from '../../utils/getMonth';
@@ -15,8 +17,8 @@ const initialState = {
 }
 
 export const TaxForm = ({ taxTypes}:{ taxTypes: ITaxTypes[]}) => {
+  const {state:{ colorTheme}} = useTheme();
   const [formData, setFormData] = useState(initialState);
-  const [formError, setFormError] = useState<string | null>(null);
 
   const handleChange = (ev:React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
      setFormData(prev => {
@@ -31,16 +33,21 @@ export const TaxForm = ({ taxTypes}:{ taxTypes: ITaxTypes[]}) => {
     ev.preventDefault();
     const {amount, date,taxTypeId} = formData;
     if(!amount || !taxTypeId || !date || parseFloat(amount.toString()) == 0) {
-      setFormError('Please fill in all the fields correctly.')
+     toast.error('Please fill in all the fields correctly', {
+        theme: colorTheme === 'dark' ? 'dark' : 'light',
+        autoClose: 3000 
+     });
       return;
     }
-    const {data, error} = await supabase.from('tax').insert([ {...formData} ]);
+   const {data, error} = await supabase.from('tax').insert([ {...formData} ]);
     if(error) {
-      setFormError(error.message);
-      return;
+      toast.error(error.message, {
+        theme: colorTheme === 'dark' ? 'dark' : 'light',
+        autoClose: 3000 
+     });
+     return;
     }
     if(data) {
-      setFormError(null);
       setFormData(initialState);
     }
   }
@@ -49,7 +56,6 @@ export const TaxForm = ({ taxTypes}:{ taxTypes: ITaxTypes[]}) => {
     <div className='w-[90% mx-auto py-4'>
       <h2 className='text-2xl text-center font-semibold py-3'>Add New Tax</h2>
       <form className='grid gap-5 items-center justify-center' onSubmit={handleSubmit}>
-        {formError && <p className='text-red-500 text-sm text-center'>{formError}</p>}
         <input className={styles.inputs} type="date" id="date" name="date" value={formData.date} onChange={handleChange}/>
         <select className={styles.inputs} id="taxTypeId" name="taxTypeId" value={formData.taxTypeId} onChange={handleChange}>
           {taxTypes.map(type => (

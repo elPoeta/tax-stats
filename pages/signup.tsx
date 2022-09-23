@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify';
+import { useTheme } from '../context/theme/useTheme';
 import supabase from '../supabase/supabaseClient';
 
 const Signup = () => {
+  const {state:{ colorTheme }} = useTheme();
   const [formData, setFormData] = useState({ email: '', password: ''});
   const [enable, setEnable] = useState(false);
 
@@ -15,6 +18,14 @@ const Signup = () => {
   }
   const handleSubmit = (ev:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     ev.preventDefault();
+    const {email, password} = formData;
+    if(email === '' || password === '') {
+      toast.error('Email or password is empty',{
+        theme: colorTheme === 'dark' ? 'dark' : 'light',
+        autoClose: 3000
+      });
+      return;    
+    }
     signUp();
   }
 
@@ -34,7 +45,7 @@ const Signup = () => {
   },[enable]);
 
   return (
-    <div className='w-[90%] mx-auto'>
+    <div className='container mx-auto w-[90%] md:w-[70%] lg:w-[40%]'>
       {
         enable ? (
           <>
