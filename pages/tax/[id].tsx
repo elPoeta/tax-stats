@@ -1,52 +1,40 @@
-import { LogarithmicScale } from "chart.js";
+import { PostgrestError } from "@supabase/supabase-js";
+import { NextApiRequestQuery } from "next/dist/server/api-utils";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { Loader } from "../../components/common/Loader";
+import { useTheme } from "../../context/theme/useTheme";
 import supabase from "../../supabase/supabaseClient";
 
-const ViewTax = () => {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const { id } = router.query;
+const getRows = async (rpcParams:[string, object]) => {
+  const [fn, obj] = rpcParams;
+  const { data, error } = await supabase.rpc(fn, obj);
+  return { data, error};
+}
 
-  useEffect(() => {
-    setIsLoading(true);
-    if (!id) return;
-    const year = new Date().getFullYear();
-    (async () => {
-      if (id == "0") {
-        console.log("Id ##", id);
-        const { data, error } = await supabase.rpc("all_tax_by_year",{ year_tax: year });
-        if(error) {
-          console.log('Error',error)
-          setIsLoading(false);
-          return;
-        }
-        console.log('DATA ',data)
-      } else {
-        console.log("Id >>>", id);
-        const { data, error } = await supabase.rpc("tax_by_year_and_by_id",{ year_tax: year, tax_type_id: id });
-
-      if(error) {
-        console.log('Error',error)
-        setIsLoading(false);
-        return;
-      }
-      console.log('DATA ',data)
-    }
-      setIsLoading(false);
-    })();
-  }, [id]);
-
+const ViewTax = ({taxes, error}:{taxes: [], error: PostgrestError | null }) => {
+  const {state:{colorTheme}} = useTheme();
+  console.log("TAXES ",taxes)
+  
   return (
     <div>
-      {!id || isLoading ? (
-        <Loader strokeColor="#0ea5e9" classNames="w-[12rem] h-[12rem]" />
-      ) : (
-        <div>Tax - {id}</div>
-      )}
+
+     {JSON.stringify(taxes)}
+  
     </div>
   );
 };
 
 export default ViewTax;
+
+export async function getServerSideProps({query}:{query:NextApiRequestQuery}) {
+  const { id } = query;
+  if(!id)   return { props: { taxes: [], error: null } }
+  const year = new Date().getFullYear();
+  const rpcParams:[string, object] = id == '0' ?
+   ["all_tax_by_year",{ year_tax: year }] : 
+   ["tax_by_year_and_by_id",{ year_tax: year, tax_type_id: id }];
+  const {data: taxes, error} = await getRows(rpcParams);
+  return { props: { taxes, error} }
+}
