@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ITaxTypes } from "../../interfaces/ITaxTypes";
+import { ITaxTypes } from "../../interfaces/ITax";
 import { TaxItem } from "./TaxItem";
 
 export const Taxs = ({ taxTypes }: { taxTypes: ITaxTypes[] }) => {

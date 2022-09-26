@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import { useTheme } from '../../context/theme/useTheme';
-import { ITaxTypes } from '../../interfaces/ITaxTypes';
+import { ITaxTypes } from '../../interfaces/ITax';
 import supabase from '../../supabase/supabaseClient';
 import { getMonth } from '../../utils/getMonth';
 
