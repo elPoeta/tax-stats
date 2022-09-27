@@ -8,10 +8,9 @@ import { useTheme } from "../../context/theme/useTheme";
 import supabase from "../../supabase/supabaseClient";
 
 import {Doughnut } from 'react-chartjs-2'
-import { Chart, ArcElement } from 'chart.js'
+import  { Chart, ArcElement, ChartOptions, Title, Tooltip, Legend   } from 'chart.js'
 
-
-Chart.register(ArcElement);
+Chart.register(ArcElement, Title, Tooltip, Legend);
 
 const fetchData = async (id:string) => {
   const year = new Date().getFullYear();
@@ -44,16 +43,15 @@ const data = {
  labels: taxes.map(tax => tax.date || tax.name ),
  datasets: [{
  label: 'dataset',
-
  data: taxes.map(tax => tax.amount ),
  backgroundColor: [
- 'rgba(255, 99, 132, 0.2)',
- 'rgba(255, 159, 64, 0.2)',
- 'rgba(255, 205, 86, 0.2)',
- 'rgba(75, 192, 192, 0.2)',
- 'rgba(54, 162, 235, 0.2)',
- 'rgba(153, 102, 255, 0.2)',
- 'rgba(201, 203, 207, 0.2)'
+ 'rgba(255, 99, 132, 0.8)',
+ 'rgba(255, 159, 64, 0.8)',
+ 'rgba(255, 205, 86, 0.8)',
+ 'rgba(75, 192, 192, 0.8)',
+ 'rgba(54, 162, 235, 0.8)',
+ 'rgba(153, 102, 255, 0.8)',
+ 'rgba(201, 203, 207, 0.8)'
 
  ],
  borderColor: [
@@ -66,16 +64,37 @@ const data = {
  'rgb(201, 203, 207)'
 
         ],
- borderWidth: 1
-    }]
+ borderWidth: 2
+    }],
+    
 }
+const config: ChartOptions = {
+ 
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Chart.js Doughnut Chart'
+      },
+      tooltip: {
+        enabled: true
+      }
+    }
+  
+};
   return (
-    <div className='w-[300px] h-[300px]'>
-     <p>tax-{id}</p>
-     <Doughnut
- data={data}
+    <div className='flex items-center justify-center'>
+      <div className="w-[300px] h-[300px] ">
 
- />
+     <Doughnut
+     data={data}
+     options={config}
+     />
+     </div>
   
     </div>
   );
