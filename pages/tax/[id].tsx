@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { Loader } from "../../components/common/Loader";
 import { useTheme } from "../../context/theme/useTheme";
 import supabase from "../../supabase/supabaseClient";
-
+import { BG_COLORS, BORDER_COLORS, chartBGColors } from "../../utils/chartColors";
 import {Doughnut } from 'react-chartjs-2'
 import  { Chart, ArcElement, ChartOptions, Title, Tooltip, Legend   } from 'chart.js'
 
@@ -44,26 +44,8 @@ const data = {
  datasets: [{
  label: 'dataset',
  data: taxes.map(tax => tax.amount ),
- backgroundColor: [
- 'rgba(255, 99, 132, 0.8)',
- 'rgba(255, 159, 64, 0.8)',
- 'rgba(255, 205, 86, 0.8)',
- 'rgba(75, 192, 192, 0.8)',
- 'rgba(54, 162, 235, 0.8)',
- 'rgba(153, 102, 255, 0.8)',
- 'rgba(201, 203, 207, 0.8)'
-
- ],
- borderColor: [
- 'rgb(255, 99, 132)',
- 'rgb(255, 159, 64)',
- 'rgb(255, 205, 86)',
- 'rgb(75, 192, 192)',
- 'rgb(54, 162, 235)',
- 'rgb(153, 102, 255)',
- 'rgb(201, 203, 207)'
-
-        ],
+ backgroundColor: chartBGColors(taxes.length, BG_COLORS),
+ borderColor: chartBGColors(taxes.length, BORDER_COLORS),
  borderWidth: 2,
  color: '#fff'
     },
@@ -102,7 +84,7 @@ const config: ChartOptions = {
 };
   return (
     <div className='flex items-center justify-center'>
-      <div className="w-[300px] h-[300px] ">
+      <div className="w-[100%] p-2">
 
      <Doughnut
      data={data}
