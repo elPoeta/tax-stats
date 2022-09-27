@@ -42,7 +42,7 @@ export const Taxs = ({ taxTypes }: { taxTypes: ITaxTypes[] }) => {
         ))}
         <Link key={0} href="/tax/0">
           <a>
-            <TaxItem name="All" icon={getIcon(0)} />
+            <TaxItem name="Servicios" icon={getIcon(0)} />
           </a>
         </Link>
       </div>
