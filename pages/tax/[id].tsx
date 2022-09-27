@@ -1,7 +1,7 @@
 import { PostgrestError } from "@supabase/supabase-js";
 import { NextApiRequestQuery } from "next/dist/server/api-utils";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { toast } from "react-toastify";
 import { Loader } from "../../components/common/Loader";
 import { useTheme } from "../../context/theme/useTheme";
@@ -64,8 +64,10 @@ const data = {
  'rgb(201, 203, 207)'
 
         ],
- borderWidth: 2
-    }],
+ borderWidth: 2,
+ color: '#fff'
+    },
+  ],
     
 }
 const config: ChartOptions = {
@@ -75,13 +77,25 @@ const config: ChartOptions = {
       legend: {
         display: true,
         position: 'top',
+        labels: {
+          // This more specific font property overrides the global property
+          font: {
+              size: 15
+          },
+          color: colorTheme === 'dark' ? '#d1d5db' : '#0f172a'
+      }
       },
       title: {
         display: true,
-        text: 'Chart.js Doughnut Chart'
-      },
+        text: 'Doughnut Chart',
+        font: {
+          size: 25
+        },
+        color: colorTheme === 'dark' ? '#d1d5db' : '#0f172a'      
+          },
       tooltip: {
-        enabled: true
+        enabled: true,
+        backgroundColor: colorTheme === 'dark' ? '#374151' : '#0f172a',
       }
     }
   
