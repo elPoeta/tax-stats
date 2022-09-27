@@ -60,7 +60,6 @@ const config: ChartOptions = {
         display: true,
         position: 'top',
         labels: {
-          // This more specific font property overrides the global property
           font: {
               size: 15
           },
@@ -69,7 +68,7 @@ const config: ChartOptions = {
       },
       title: {
         display: true,
-        text: 'Doughnut Chart',
+        text: id == '0' ? 'Servicios' : taxes[0].name,
         font: {
           size: 25
         },
