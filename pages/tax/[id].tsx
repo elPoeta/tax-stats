@@ -45,11 +45,34 @@ const ViewTax = ({
     });
   }
 
+  const handleChange = (ev: React.ChangeEvent<HTMLSelectElement>) => {
+    setCurrentChart(ev.target.value);
+  };
+
   const chart = () => (
     <DynamicChart type={currentChart} id={id as string} taxes={taxes} />
   );
 
-  return <div className="flex items-center justify-center">{chart()}</div>;
+  return (
+    <div className="flex items-center justify-center flex-col">
+      {chart()}
+      <div className="pt-5">
+        <select
+          className="dark:bg-slate-800 rounded-full border-2 border-blue-400 p-2"
+          id="chartSelection"
+          name="chartSelection"
+          value={currentChart}
+          onChange={handleChange}
+        >
+          {["DOUGHNUT", "PIE"].map((type) => (
+            <option key={type} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
 };
 
 export default ViewTax;
