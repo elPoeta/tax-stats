@@ -45,6 +45,12 @@ export const getDataset = (taxes: ITax[], label: string) => {
         borderColor: chartBGColors(taxes.length, BORDER_COLORS),
         borderWidth: 2,
         color: "#fff",
+        pointRadius: 5,
+        pointHoverRadius: 5,
+        borderCapStyle: "butt",
+        pointHoverBackgroundColor: "rgba(59, 130, 246, 1)",
+        pointHoverBorderColor: "rgba(59, 130, 246, 1)",
+        pointHoverBorderWidth: 2,
       },
     ],
   };
@@ -54,7 +60,9 @@ export const getBaseConfig = (
   taxes: ITax[],
   id: string,
   colorTheme: string
-): ChartOptions => {
+): ChartOptions<
+  "doughnut" | "pie" | "bar" | "line" | "polarArea" | "radar"
+> => {
   return {
     responsive: true,
     plugins: {
