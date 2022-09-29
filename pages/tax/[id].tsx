@@ -64,7 +64,7 @@ const ViewTax = ({
           value={currentChart}
           onChange={handleChange}
         >
-          {["DOUGHNUT", "PIE"].map((type) => (
+          {["DOUGHNUT", "PIE", "BAR", 'LINE', 'POLAR', 'RADAR'].map((type) => (
             <option key={type} value={type}>
               {type}
             </option>
