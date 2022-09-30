@@ -16,6 +16,7 @@ import {
 import { Bar, Line, PolarArea, Radar, Pie, Doughnut } from "react-chartjs-2";
 import { getBaseConfig, getDataset } from "../../utils/chartUtils";
 import { useTheme } from "../../context/theme/useTheme";
+import { title } from "process";
 Chart.register(
   CategoryScale,
   ArcElement,
@@ -29,55 +30,55 @@ Chart.register(
   Legend
 );
 
-export const DynamicChart: FC<{ type: string; taxes: ITax[]; id: string }> = (
+export const DynamicChart: FC<{ type: string; taxes: ITax[]; id: string; label:string; title:string;}> = (
   props
 ) => {
   const {
     state: { colorTheme },
   } = useTheme();
-  const { type, id, taxes } = props;
+  const { type, id, taxes, label, title } = props;
   const setChart = () => {
     switch (type.toLocaleUpperCase()) {
       case "DOUGHNUT":
         return (
           <Doughnut
-            data={getDataset(taxes, "dataset")}
-            options={getBaseConfig(taxes, id as string, colorTheme)}
+            data={getDataset(taxes, label)}
+            options={getBaseConfig(colorTheme, title)}
           />
         );
       case "PIE":
         return (
           <Pie
-            data={getDataset(taxes, "dataset")}
-            options={getBaseConfig(taxes, id as string, colorTheme)}
+            data={getDataset(taxes, label)}
+            options={getBaseConfig(colorTheme, title)}
           />
         );
       case "BAR":
         return (
           <Bar
-            data={getDataset(taxes, "dataset")}
-            options={getBaseConfig(taxes, id as string, colorTheme)}
+            data={getDataset(taxes, label)}
+            options={getBaseConfig(colorTheme, title)}
           />
         );
       case "LINE":
         return (
           <Line
-            data={getDataset(taxes, "dataset")}
-            options={getBaseConfig(taxes, id as string, colorTheme)}
+            data={getDataset(taxes, label)}
+            options={getBaseConfig(colorTheme, title)}
           />
         );
       case "RADAR":
         return (
           <Radar
-            data={getDataset(taxes, "dataset")}
-            options={getBaseConfig(taxes, id as string, colorTheme)}
+            data={getDataset(taxes, label)}
+            options={getBaseConfig(colorTheme, title)}
           />
         );
       case "POLAR":
         return (
           <PolarArea
-            data={getDataset(taxes, "dataset")}
-            options={getBaseConfig(taxes, id as string, colorTheme)}
+            data={getDataset(taxes, label)}
+            options={getBaseConfig(colorTheme, title)}
           />
         );
     }
