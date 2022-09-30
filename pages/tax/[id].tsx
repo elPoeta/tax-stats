@@ -36,8 +36,14 @@ const ViewTax = ({
   const router = useRouter();
   const { id } = router.query;
   const [currentChart, setCurrentChart] = useState("DOUGHNUT");
-  const [label, setLabel] = useState<string>((new Date().getFullYear()).toString());
-  const [title, setTitle] = useState<string>(id == '0' ? 'Servivios' : taxes[0].name);
+  const [label, setLabel] = useState<string>(
+    new Date().getFullYear().toString()
+  );
+  const [title, setTitle] = useState<string>(
+    id == "0"
+      ? `Servicios - ${label}`
+      : `${!taxes.length ? "" : taxes[0].name} - ${label}`
+  );
 
   console.log("TAXES ", taxes);
   if (error) {
@@ -52,26 +58,42 @@ const ViewTax = ({
   };
 
   const chart = () => (
-    <DynamicChart type={currentChart} id={id as string} taxes={taxes} label={label} title={title}/>
+    <>
+      {!taxes.length ? (
+        <h2 className="text-2xl p-2">No hay datos.</h2>
+      ) : (
+        <DynamicChart
+          type={currentChart}
+          id={id as string}
+          taxes={taxes}
+          label={label}
+          title={title}
+        />
+      )}
+    </>
   );
 
   return (
     <div className="flex items-center justify-center flex-col">
       {chart()}
       <div className="pt-5">
-        <select
-          className="dark:bg-slate-800 rounded-full border-2 border-blue-400 p-2"
-          id="chartSelection"
-          name="chartSelection"
-          value={currentChart}
-          onChange={handleChange}
-        >
-          {["DOUGHNUT", "PIE", "BAR", 'LINE', 'POLAR', 'RADAR'].map((type) => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
-        </select>
+        {taxes.length > 0 && (
+          <select
+            className="dark:bg-slate-800 rounded-full border-2 border-blue-400 p-2"
+            id="chartSelection"
+            name="chartSelection"
+            value={currentChart}
+            onChange={handleChange}
+          >
+            {["DOUGHNUT", "PIE", "BAR", "LINE", "POLAR", "RADAR"].map(
+              (type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              )
+            )}
+          </select>
+        )}
       </div>
     </div>
   );
