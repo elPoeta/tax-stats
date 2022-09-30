@@ -1,5 +1,6 @@
 import { ChartOptions } from "chart.js";
 import { ITax } from "../interfaces/ITax";
+import { getMonth } from "./getMonth";
 
 export const BG_COLORS = {
   "0": "rgba(239, 68, 68, 0.8)",
@@ -36,7 +37,13 @@ export const chartBGColors = (len: number, type: Record<string, string>) =>
 
 export const getDataset = (taxes: ITax[], label: string) => {
   return {
-    labels: taxes.map((tax) => tax.date || tax.name),
+    labels: taxes.map((tax) =>
+      tax.date
+        ? `${getMonth(new Date(tax.date).getMonth())?.MM}-${new Date(
+            tax.date
+          ).getFullYear()}`
+        : tax.name
+    ),
     datasets: [
       {
         label,
