@@ -57,9 +57,8 @@ export const getDataset = (taxes: ITax[], label: string) => {
 };
 
 export const getBaseConfig = (
-  taxes: ITax[],
-  id: string,
-  colorTheme: string
+  colorTheme: string,
+  title: string
 ): ChartOptions<
   "doughnut" | "pie" | "bar" | "line" | "polarArea" | "radar"
 > => {
@@ -78,7 +77,7 @@ export const getBaseConfig = (
       },
       title: {
         display: true,
-        text: id == "0" ? "Servicios" : taxes[0].name,
+        text: title,
         font: {
           size: 25,
         },

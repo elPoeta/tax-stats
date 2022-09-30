@@ -33,9 +33,11 @@ const ViewTax = ({
   const {
     state: { colorTheme },
   } = useTheme();
-  const [currentChart, setCurrentChart] = useState("DOUGHNUT");
   const router = useRouter();
   const { id } = router.query;
+  const [currentChart, setCurrentChart] = useState("DOUGHNUT");
+  const [label, setLabel] = useState<string>((new Date().getFullYear()).toString());
+  const [title, setTitle] = useState<string>(id == '0' ? 'Servivios' : taxes[0].name);
 
   console.log("TAXES ", taxes);
   if (error) {
@@ -50,7 +52,7 @@ const ViewTax = ({
   };
 
   const chart = () => (
-    <DynamicChart type={currentChart} id={id as string} taxes={taxes} />
+    <DynamicChart type={currentChart} id={id as string} taxes={taxes} label={label} title={title}/>
   );
 
   return (
