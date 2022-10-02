@@ -11,7 +11,7 @@ const styles = {
 }
 
 const initialState = {
-  date: `${new Date().getFullYear()}-${getMonth(new Date().getMonth())!.mm}-${new Date().getDate()}`,
+  date: `${new Date().getFullYear()}-${getMonth(new Date().getMonth())!.mm}-${new Date().getDate() > 9 ? new Date().getDate() : `0${new Date().getDate()}`}`,
   taxTypeId: 1,
   amount: 0
 }
