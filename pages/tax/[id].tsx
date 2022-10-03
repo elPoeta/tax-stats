@@ -1,14 +1,14 @@
 import { PostgrestError } from "@supabase/supabase-js";
 import { NextApiRequestQuery } from "next/dist/server/api-utils";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useTheme } from "../../context/theme/useTheme";
 import supabase from "../../supabase/supabaseClient";
 import { ITax } from "../../interfaces/ITax";
 import { DynamicChart } from "../../components/chart/DynamicChart";
-import { getMonth } from "../../utils/getMonth";
-import { prepareServerlessUrl } from "next/dist/server/base-server";
+import { formatDate } from "../../utils/dateUtils";
+
 
 const fetchData = async (id: string) => {
   const year = new Date().getFullYear();
@@ -47,15 +47,17 @@ const ViewTax = ({
       : `${!taxes.length ? "" : taxes[0].name} - ${label}`
   );
   const [dateForm, setDateForm] = useState({
-    from: `${new Date().getFullYear()}-${
-      getMonth(new Date().getMonth())!.mm
-    }-${new Date().getDate() > 9 ? new Date().getDate() : `0${new Date().getDate()}`}`,
-    to: `${new Date().getFullYear()}-${
-      getMonth(new Date().getMonth())!.mm
-    }-${new Date().getDate() > 9 ? new Date().getDate() : `0${new Date().getDate()}`}`
+    from: formatDate(),
+    to: formatDate(),
+    enableRodri: false,
+    enableLeo: false
+  });
+  const [minMaxDate, setMinMaxDate] = useState({
+    max: formatDate(new Date(new Date(dateForm.from).setMonth(new Date(dateForm.from).getMonth()+12))),
+    min: formatDate()
   });
   // const minDate = new Date()
-  // const maxDate = new Date(minDate.setMonth(min.getMonth()+12));
+  // const maxDate = new Date(minDate.setMonth(minDate.getMonth()+12));
   console.log("TAXES ", taxes);
   if (error) {
     toast.error(error.message, {
@@ -70,15 +72,20 @@ const ViewTax = ({
 
   const handleDate = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value} = ev.target;
-
     setDateForm(prev => {
-      console.log('PREV',prev )
       return {
         ...prev,
         [name]: value
       };
     });
   };
+useEffect(() => {
+  setMinMaxDate({
+     min: formatDate(new Date(dateForm.from)),
+     max: formatDate(new Date(new Date(dateForm.from).setMonth(new Date(dateForm.from).getMonth()+12)))
+  });
+  
+},[dateForm]);
 
   const chart = () => (
     <>
@@ -127,6 +134,8 @@ const ViewTax = ({
                   name="from"
                   value={dateForm.from}
                   onChange={handleDate}
+                  max={formatDate()}
+                  min={formatDate(new Date('2022-01-01'))}
                 />
               </label>
               <label htmlFor="to">
@@ -138,6 +147,8 @@ const ViewTax = ({
                   name="to"
                   value={dateForm.to}
                   onChange={handleDate}
+                  min={minMaxDate.min}
+                  max={minMaxDate.max}
                 />
               </label>
             </div>

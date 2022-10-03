@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useTheme } from '../../context/theme/useTheme';
 import { ITaxTypes } from '../../interfaces/ITax';
 import supabase from '../../supabase/supabaseClient';
-import { getMonth } from '../../utils/getMonth';
+import { formatDate } from '../../utils/dateUtils';
 
 const styles = {
   inputs: 'dark:bg-slate-800 rounded-full border-2 border-blue-400 p-2',
@@ -11,7 +11,7 @@ const styles = {
 }
 
 const initialState = {
-  date: `${new Date().getFullYear()}-${getMonth(new Date().getMonth())!.mm}-${new Date().getDate() > 9 ? new Date().getDate() : `0${new Date().getDate()}`}`,
+  date: formatDate(),
   taxTypeId: 1,
   amount: 0
 }

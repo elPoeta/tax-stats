@@ -1,6 +1,6 @@
 import { ChartOptions } from "chart.js";
 import { ITax } from "../interfaces/ITax";
-import { getMonth } from "./getMonth";
+import { getMonth } from "./dateUtils";
 
 export const BG_COLORS = {
   "0": "rgba(239, 68, 68, 0.8)",
