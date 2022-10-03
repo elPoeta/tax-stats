@@ -8,6 +8,7 @@ import supabase from "../../supabase/supabaseClient";
 import { ITax } from "../../interfaces/ITax";
 import { DynamicChart } from "../../components/chart/DynamicChart";
 import { formatDate } from "../../utils/dateUtils";
+import {PowerIcon} from '@heroicons/react/24/solid';
 
 
 const fetchData = async (id: string) => {
@@ -151,6 +152,14 @@ useEffect(() => {
                   max={minMaxDate.max}
                 />
               </label>
+              <div>
+                <span>Enable Rodri</span>
+                <PowerIcon className={`w-6 h6 cursor-pointer ${dateForm.enableRodri ? 'fill-green-400' : 'fill-red-500'}`}  onClick={() => setDateForm(prev => { return {...prev, enableRodri: !prev.enableRodri}})}/>
+              </div>
+              <div>
+                <span>Enable Leo</span>
+                <PowerIcon className={`w-6 h6 cursor-pointer ${dateForm.enableLeo ? 'fill-green-400' : 'fill-red-500'}`}  onClick={() => setDateForm(prev => { return {...prev, enableLeo: !prev.enableLeo}})}/>
+              </div>
             </div>
             <pre>
               
