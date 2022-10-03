@@ -30,3 +30,11 @@ export const getMonth = (
       getMonth(new Date().getMonth());
   }
 };
+
+export const formatDate = (d?: Date): string => {
+  const date = d || new Date();
+  const year = date.getFullYear();
+  const month = getMonth(date.getMonth())!.mm;
+  const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
+  return `${year}-${month}-${day}`;
+};
