@@ -16,7 +16,7 @@ const fetchData = async (id: string) => {
   const rpcParams: [string, object] =
     id == "0"
       ? ["all_tax_by_year", { year_tax: year }]
-      : ["tax_by_year_and_by_id", { year_tax: year, tax_type_id: id }];
+      : ["tax_by_year_and_by_id", { year_tax: year, id_tax_type: id }];
   const { data: taxes, error } = await getRows(rpcParams);
   return { taxes, error };
 };

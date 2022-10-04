@@ -19,7 +19,7 @@ export async function getServerSideProps({ req }:{ req:NextApiRequest }) {
   if (!user) {
     return { props: {}, redirect: { destination: '/signin' } }
   }
-  const { data: taxTypes, error } = await supabase.from('taxType').select('*');
+  const { data: taxTypes, error } = await supabase.from('tax_type').select('*');
 
   return { props: { user, taxTypes } }
 }

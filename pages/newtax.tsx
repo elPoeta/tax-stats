@@ -13,7 +13,7 @@ export default NewTax
 
 
 export const getStaticProps = async () => {
-  const { data: taxTypes, error } = await supabase.from('taxType').select('*');
+  const { data: taxTypes, error } = await supabase.from('tax_type').select('*');
   return {
     props: {
       taxTypes
