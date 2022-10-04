@@ -12,7 +12,7 @@ const styles = {
 
 const initialState = {
   date: formatDate(),
-  taxTypeId: 1,
+  tax_type_id: 1,
   amount: 0
 }
 
@@ -31,8 +31,8 @@ export const TaxForm = ({ taxTypes}:{ taxTypes: ITaxTypes[]}) => {
 
   const handleSubmit  = async (ev:React.MouseEvent<HTMLFormElement, MouseEvent>) => {
     ev.preventDefault();
-    const {amount, date,taxTypeId} = formData;
-    if(!amount || !taxTypeId || !date || parseFloat(amount.toString()) == 0) {
+    const {amount, date,tax_type_id} = formData;
+    if(!amount || !tax_type_id || !date || parseFloat(amount.toString()) == 0) {
      toast.error('Please fill in all the fields correctly', {
         theme: colorTheme === 'dark' ? 'dark' : 'light',
         autoClose: 3000 
@@ -57,7 +57,7 @@ export const TaxForm = ({ taxTypes}:{ taxTypes: ITaxTypes[]}) => {
       <h2 className='text-2xl text-center font-semibold py-3'>Add New Tax</h2>
       <form className='grid gap-5 items-center justify-center' onSubmit={handleSubmit}>
         <input className={styles.inputs} type="date" id="date" name="date" value={formData.date} onChange={handleChange}/>
-        <select className={styles.inputs} id="taxTypeId" name="taxTypeId" value={formData.taxTypeId} onChange={handleChange}>
+        <select className={styles.inputs} id="tax_type_id" name="tax_type_id" value={formData.tax_type_id} onChange={handleChange}>
           {taxTypes.map(type => (
             <option key={type.id} value={type.id}>{type.name}</option>
           ))}
