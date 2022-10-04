@@ -152,6 +152,8 @@ useEffect(() => {
                   max={minMaxDate.max}
                 />
               </label>
+              { id == '0' &&
+              <>
               <div>
                 <span>Enable Rodri</span>
                 <PowerIcon className={`w-6 h6 cursor-pointer ${dateForm.enableRodri ? 'fill-green-400' : 'fill-red-500'}`}  onClick={() => setDateForm(prev => { return {...prev, enableRodri: !prev.enableRodri}})}/>
@@ -160,7 +162,9 @@ useEffect(() => {
                 <span>Enable Leo</span>
                 <PowerIcon className={`w-6 h6 cursor-pointer ${dateForm.enableLeo ? 'fill-green-400' : 'fill-red-500'}`}  onClick={() => setDateForm(prev => { return {...prev, enableLeo: !prev.enableLeo}})}/>
               </div>
-            </div>
+              </>
+              }
+            </div> 
             <pre>
               
             {JSON.stringify(dateForm, null, 2)}
