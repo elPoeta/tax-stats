@@ -9,22 +9,7 @@ import { ITax } from "../../interfaces/ITax";
 import { DynamicChart } from "../../components/chart/DynamicChart";
 import { formatDate } from "../../utils/dateUtils";
 import {PowerIcon} from '@heroicons/react/24/solid';
-
-
-const fetchData = async (id: string) => {
-  const year = new Date().getFullYear();
-  const rpcParams: [string, object] =
-    id == "0"
-      ? ["all_tax_by_year", { year_tax: year }]
-      : ["tax_by_year_and_by_id", { year_tax: year, id_tax_type: id }];
-  const { data: taxes, error } = await getRows(rpcParams);
-  return { taxes, error };
-};
-const getRows = async (rpcParams: [string, object]) => {
-  const [fn, obj] = rpcParams;
-  const { data, error } = await supabase.rpc(fn, obj);
-  return { data, error };
-};
+import { fetchByYearAndTaxTypeId } from "../../services/rpcQuerys";
 
 const ViewTax = ({
   taxes,
@@ -110,23 +95,29 @@ useEffect(() => {
       <div className="pt-5">
         {taxes.length > 0 && (
           <div>
+            <div className="flex items-center justify-center">
+
+            <label htmlFor="chartSelection">
+              Chart:
             <select
-              className="dark:bg-slate-800 rounded-full border-2 border-blue-400 p-2"
+              className="dark:bg-slate-800 rounded-full border-2 border-blue-400 p-2 ml-1"
               id="chartSelection"
               name="chartSelection"
               value={currentChart}
               onChange={handleChange}
-            >
+              >
               {["DOUGHNUT", "PIE", "BAR", "LINE", "POLAR", "RADAR"].map(
                 (type) => (
                   <option key={type} value={type}>
                     {type}
                   </option>
                 )
-              )}
+                )}
             </select>
-            <div className="flex m-3 flex-col">
-              <label htmlFor="from">
+            </label>
+           </div>
+            <div className="flex m-3 flex-row items-center justify-evenly">
+              <label htmlFor="from" className="px-1">
                 From:
                 <input
                   className="dark:bg-slate-800 rounded-full border-2 border-blue-400 p-2"
@@ -139,7 +130,7 @@ useEffect(() => {
                   min={formatDate(new Date('2022-01-01'))}
                 />
               </label>
-              <label htmlFor="to">
+              <label htmlFor="to" className="px-1">
                 To:
                 <input
                  className="dark:bg-slate-800 rounded-full border-2 border-blue-400 p-2"
@@ -152,8 +143,9 @@ useEffect(() => {
                   max={minMaxDate.max}
                 />
               </label>
-              { id == '0' &&
-              <>
+            </div> 
+            { id == '0' &&
+              <div>
               <div>
                 <span>Enable Rodri</span>
                 <PowerIcon className={`w-6 h6 cursor-pointer ${dateForm.enableRodri ? 'fill-green-400' : 'fill-red-500'}`}  onClick={() => setDateForm(prev => { return {...prev, enableRodri: !prev.enableRodri}})}/>
@@ -162,13 +154,8 @@ useEffect(() => {
                 <span>Enable Leo</span>
                 <PowerIcon className={`w-6 h6 cursor-pointer ${dateForm.enableLeo ? 'fill-green-400' : 'fill-red-500'}`}  onClick={() => setDateForm(prev => { return {...prev, enableLeo: !prev.enableLeo}})}/>
               </div>
-              </>
+              </div>
               }
-            </div> 
-            <pre>
-              
-            {JSON.stringify(dateForm, null, 2)}
-            </pre>
             <button>Search</button>
           </div>
         )}
@@ -186,6 +173,6 @@ export async function getServerSideProps({
 }) {
   const { id } = query;
   if (!id) return { props: { taxes: [], error: null } };
-  const { taxes, error } = await fetchData(id as string);
+  const { taxes, error } = await fetchByYearAndTaxTypeId(id as string);
   return { props: { taxes, error } };
 }
