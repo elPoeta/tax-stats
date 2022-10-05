@@ -16,7 +16,7 @@ import {
 import { Bar, Line, PolarArea, Radar, Pie, Doughnut } from "react-chartjs-2";
 import { getBaseConfig, getDataset } from "../../utils/chartUtils";
 import { useTheme } from "../../context/theme/useTheme";
-import { title } from "process";
+
 Chart.register(
   CategoryScale,
   ArcElement,
