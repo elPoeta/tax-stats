@@ -9,22 +9,7 @@ import { ITax } from "../../interfaces/ITax";
 import { DynamicChart } from "../../components/chart/DynamicChart";
 import { formatDate } from "../../utils/dateUtils";
 import {PowerIcon} from '@heroicons/react/24/solid';
-
-
-const fetchData = async (id: string) => {
-  const year = new Date().getFullYear();
-  const rpcParams: [string, object] =
-    id == "0"
-      ? ["all_tax_by_year", { year_tax: year }]
-      : ["tax_by_year_and_by_id", { year_tax: year, id_tax_type: id }];
-  const { data: taxes, error } = await getRows(rpcParams);
-  return { taxes, error };
-};
-const getRows = async (rpcParams: [string, object]) => {
-  const [fn, obj] = rpcParams;
-  const { data, error } = await supabase.rpc(fn, obj);
-  return { data, error };
-};
+import { fetchByYearAndTaxTypeId } from "../../services/rpcQuerys";
 
 const ViewTax = ({
   taxes,
@@ -188,6 +173,6 @@ export async function getServerSideProps({
 }) {
   const { id } = query;
   if (!id) return { props: { taxes: [], error: null } };
-  const { taxes, error } = await fetchData(id as string);
+  const { taxes, error } = await fetchByYearAndTaxTypeId(id as string);
   return { props: { taxes, error } };
 }

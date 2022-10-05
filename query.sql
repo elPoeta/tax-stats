@@ -17,6 +17,20 @@ group by tax.tax_type_id, tax_type.name;
 END
 $func$;
 
+DROP FUNCTION if exists tax_between_month_and_by_id;
+CREATE OR REPLACE FUNCTION tax_between_month_and_by_id(id_tax_type bigint, f_date date, t_date date)
+  RETURNS TABLE (id bigint,  amount float, date varchar, tax_date date, name varchar) 
+  LANGUAGE plpgsql AS
+$func$
+BEGIN
+   RETURN QUERY
+  SELECT tax.id, tax.amount, to_char(date,'Mon-YY') as date, tax.date as tax_date, tax_type.name
+   FROM tax
+   inner join tax_type on tax_type.id = tax.tax_type_id 
+   WHERE tax_type.id =  AND tax.date >= f_date AND tax.date < t_date order by tax.date;
+END
+$func$;
+
 -- TAX BY YEAR AND TAX TYPE ID
 
 DROP FUNCTION if exists tax_by_year_and_by_id;
@@ -61,6 +75,9 @@ inner join tax_type on tax_type.id = tax.tax_type_id
 WHERE tax.date BETWEEN '2022-01-01' AND '2022-08-31' AND tax.tax_type_id NOT IN (8,9)
 group by  to_char(date,'Mon-YY'); 
 
-
-
+SELECT sum(tax.amount) as total, to_char(date,'Mon-YY') as date, tax.date as tax_date
+FROM tax
+inner join tax_type on tax_type.id = tax.tax_type_id 
+WHERE tax.date >= '2022-01-01' AND tax.date < '2022-06-30' AND tax.tax_type_id NOT IN (8,9)
+group by  to_char(date,'Mon-YY'), tax.date order by tax_date;
  
