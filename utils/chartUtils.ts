@@ -38,7 +38,9 @@ export const chartBGColors = (len: number, type: Record<string, string>) =>
 export const getDataset = (taxes: ITax[], label: string) => {
   return {
     labels: taxes.map((tax) =>
-      tax.date
+      tax.mon
+        ? tax.mon
+        : tax.date
         ? `${getMonth(new Date(tax.date).getMonth())?.MM}-${new Date(
             tax.date
           ).getFullYear()}`

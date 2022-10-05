@@ -8,8 +8,8 @@ import supabase from "../../supabase/supabaseClient";
 import { ITax } from "../../interfaces/ITax";
 import { DynamicChart } from "../../components/chart/DynamicChart";
 import { formatDate } from "../../utils/dateUtils";
-import {PowerIcon} from '@heroicons/react/24/solid';
-import { fetchByYearAndTaxTypeId } from "../../services/rpcQuerys";
+import {MagnifyingGlassCircleIcon, PowerIcon} from '@heroicons/react/24/solid';
+import { fetchBetweenMonthAnTaxTypeById, fetchByYearAndTaxTypeId } from "../../services/rpcQuerys";
 
 const ViewTax = ({
   taxes,
@@ -42,9 +42,10 @@ const ViewTax = ({
     max: formatDate(new Date(new Date(dateForm.from).setMonth(new Date(dateForm.from).getMonth()+12))),
     min: formatDate()
   });
+  const [currentTaxes, setCurrentTaxes] = useState<ITax[]>(taxes);
   // const minDate = new Date()
   // const maxDate = new Date(minDate.setMonth(minDate.getMonth()+12));
-  console.log("TAXES ", taxes);
+  
   if (error) {
     toast.error(error.message, {
       autoClose: 3000,
@@ -75,13 +76,13 @@ useEffect(() => {
 
   const chart = () => (
     <>
-      {!taxes.length ? (
+      {!currentTaxes.length ? (
         <h2 className="text-2xl p-2">No hay datos.</h2>
       ) : (
         <DynamicChart
           type={currentChart}
           id={id as string}
-          taxes={taxes}
+          taxes={currentTaxes}
           label={label}
           title={title}
         />
@@ -89,12 +90,31 @@ useEffect(() => {
     </>
   );
 
+  const handleFind = async () => {
+    const f_date = dateForm.from.slice(0, -2) + '01';
+    const t_date = dateForm.to.slice(0, -2) + '28';
+    if(id != '0') {
+      const { taxes: t, error } = await fetchBetweenMonthAnTaxTypeById(id as string, f_date, t_date);
+      if(error) {
+        console.error(error)
+        toast.error(error.message,{
+          theme: colorTheme === 'dark' ? 'dark' : 'light',
+          autoClose: 3000
+        });
+        return;
+      }
+       setCurrentTaxes(t as ITax[]);
+    } else {
+       // TODO fetch data
+    }
+  }
+
   return (
     <div className="flex items-center justify-center flex-col">
       {chart()}
       <div className="pt-5">
-        {taxes.length > 0 && (
-          <div>
+        {currentTaxes.length > 0 && (
+          <div className="flex items-center justify-center flex-col">
             <div className="flex items-center justify-center">
 
             <label htmlFor="chartSelection">
@@ -156,7 +176,10 @@ useEffect(() => {
               </div>
               </div>
               }
-            <button>Search</button>
+            <div onClick={handleFind} className="flex items-center justify-center p-2 rounded-md border-2 border-[#0ea5e9] w-[150px] cursor-pointer">
+              <MagnifyingGlassCircleIcon className="w-8 h-8 fill-[#0ea5e9]"/>
+              <span className="text-[#0ea5e9] pl-2 font-bold text-lg">Buscar</span>
+            </div>
           </div>
         )}
       </div>
