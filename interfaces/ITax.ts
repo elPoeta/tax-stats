@@ -12,4 +12,5 @@ export interface ITax {
   is_deleted?: boolean;
   amount: number;
   date: string;
+  mon?: string;
 }
