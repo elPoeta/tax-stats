@@ -1,4 +1,3 @@
-import { ChartOptions } from "chart.js";
 import { ITax } from "../interfaces/ITax";
 import { getMonth } from "./dateUtils";
 
@@ -90,15 +89,6 @@ export const getBaseConfig = (colorTheme: string, title: string): any => {
       tooltip: {
         enabled: true,
         backgroundColor: colorTheme === "dark" ? "#374151" : "#0f172a",
-      },
-    },
-    scale: {
-      y: {
-        ticks: {
-          callback: function (val: string, index: number) {
-            return "${this.getLabelForValue(Number(val))}%";
-          },
-        },
       },
     },
   };
