@@ -9,7 +9,7 @@ import { ITax } from "../../interfaces/ITax";
 import { DynamicChart } from "../../components/chart/DynamicChart";
 import { formatDate } from "../../utils/dateUtils";
 import {MagnifyingGlassCircleIcon, PowerIcon} from '@heroicons/react/24/solid';
-import { fetchBetweenMonthAnTaxTypeById, fetchByYearAndTaxTypeId } from "../../services/rpcQuerys";
+import { fetchAllTaxesBetweenMonthsAndNotIn, fetchBetweenMonthAnTaxTypeById, fetchByYearAndTaxTypeId } from "../../services/rpcQuerys";
 
 const ViewTax = ({
   taxes,
@@ -105,7 +105,25 @@ useEffect(() => {
       }
        setCurrentTaxes(t as ITax[]);
     } else {
-       // TODO fetch data
+      let ids:number[] = [0];
+      if(!dateForm.enableLeo && !dateForm.enableRodri) {
+          ids = [ 8,9 ];
+      } else if(dateForm.enableLeo) {
+          ids = [9];
+      }  else if(dateForm.enableRodri) {
+          ids = [8];
+      } 
+      const { taxes: t, error } = await fetchAllTaxesBetweenMonthsAndNotIn(ids,f_date,t_date);
+      if(error) {
+        console.error(error)
+        toast.error(error.message,{
+          theme: colorTheme === 'dark' ? 'dark' : 'light',
+          autoClose: 3000
+        });
+        return;
+      }
+      setCurrentTaxes(t as ITax[]);
+      
     }
   }
 

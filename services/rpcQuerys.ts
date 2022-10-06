@@ -23,6 +23,19 @@ export const fetchBetweenMonthAnTaxTypeById = async (
   return { taxes, error };
 };
 
+export const fetchAllTaxesBetweenMonthsAndNotIn = async (
+  ids: number[],
+  f_date: string,
+  t_date: string
+) => {
+  const rpcParams: [string, object] = [
+    "all_taxes_between_months_and_not_in",
+    { ids_tax_type: ids, f_date, t_date },
+  ];
+  const { data: taxes, error } = await getRows(rpcParams);
+  return { taxes, error };
+};
+
 const getRows = async (rpcParams: [string, object]) => {
   const [fn, obj] = rpcParams;
   const { data, error } = await supabase.rpc(fn, obj);

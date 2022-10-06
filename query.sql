@@ -31,6 +31,21 @@ BEGIN
 END
 $func$;
 
+DROP FUNCTION if exists all_taxes_between_months_and_not_in;
+CREATE OR REPLACE FUNCTION all_taxes_between_months_and_not_in(ids_tax_type bigint[], f_date date, t_date date)
+  RETURNS TABLE (amount float,  mon text, tax_date date) 
+  LANGUAGE plpgsql AS
+$func$
+BEGIN
+   RETURN QUERY
+SELECT sum(tax.amount) as total, to_char(date,'Mon-YY') as mon, tax.date
+FROM tax
+inner join tax_type on tax_type.id = tax.tax_type_id 
+WHERE tax.date >= f_date AND tax.date < t_date AND tax.tax_type_id <> ALL (ids_tax_type)
+group by  to_char(date,'Mon-YY'), tax.date order by tax.date;
+END
+$func$;
+
 -- TAX BY YEAR AND TAX TYPE ID
 
 DROP FUNCTION if exists tax_by_year_and_by_id;
