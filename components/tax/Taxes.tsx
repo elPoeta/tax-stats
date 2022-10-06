@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ITaxTypes } from "../../interfaces/ITax";
 import { TaxItem } from "./TaxItem";
 
-export const Taxs = ({ taxTypes }: { taxTypes: ITaxTypes[] }) => {
+export const Taxes = ({ taxTypes }: { taxTypes: ITaxTypes[] }) => {
   const getIcon = (id: number): string => {
     switch (id) {
       case 0:

@@ -259,7 +259,7 @@ const Home: NextPage = () => {
           <Link href="/tax">
             <a className="flex items-center justify-center">
               <ChartPieIcon className="h-10 w-10 fill-[#0ea5e9]"/>
-              <span className="ml-2 font-bold">Taxs</span>
+              <span className="ml-2 font-bold">Taxes</span>
             </a>
           </Link>         
         </div>

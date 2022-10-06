@@ -1,14 +1,13 @@
 import { User } from "@supabase/supabase-js";
 import type { NextApiRequest } from "next";
 import React from 'react'
-import { Taxs } from "../../components/tax/Taxs";
+import { Taxes } from "../../components/tax/Taxes";
 import { ITaxTypes } from "../../interfaces/ITax";
 import supabase from '../../supabase/supabaseClient'
 
 const Tax= ({user, taxTypes}:{user:User, taxTypes: ITaxTypes[]}) => {
-  console.log(taxTypes)
   return (
-    <Taxs taxTypes={taxTypes} />
+    <Taxes taxTypes={taxTypes} />
   )
 }
 
