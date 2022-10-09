@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useTheme } from "../../context/theme/useTheme";
 import { ITax } from "../../interfaces/ITax";
 import { DynamicChart } from "../../components/chart/DynamicChart";
-import { formatDate } from "../../utils/dateUtils";
+import { formatDate, getMonth } from "../../utils/dateUtils";
 import {
   MagnifyingGlassCircleIcon,
   PowerIcon,
@@ -126,6 +126,7 @@ const ViewTax = ({
         });
         return;
       }
+      setTitle(`${getMonth(new Date(dateForm.from).getMonth())?.MM} ${new Date(dateForm.from).getFullYear()} - ${getMonth(new Date(dateForm.to).getMonth())?.MM} ${new Date(dateForm.to).getFullYear()}`)
       setCurrentTaxes(t as ITax[]);
     } else {
       let ids: number[] = [0];
