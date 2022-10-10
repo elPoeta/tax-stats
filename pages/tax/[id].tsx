@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useTheme } from "../../context/theme/useTheme";
-import { ITax } from "../../interfaces/ITax";
+import { ITax, ITaxTypes } from "../../interfaces/ITax";
 import { DynamicChart } from "../../components/chart/DynamicChart";
 import { formatDate, getMonth } from "../../utils/dateUtils";
 import {
@@ -17,12 +17,15 @@ import {
   fetchByYearAndTaxTypeId,
   fetchAllTaxesBetweenMonths,
 } from "../../services/rpcQuerys";
+import supabase from "../../supabase/supabaseClient";
 
 const ViewTax = ({
   taxes,
+  taxTypes,
   error,
 }: {
   taxes: ITax[];
+  taxTypes: ITaxTypes[];
   error: PostgrestError | null;
 }) => {
   const {
@@ -30,7 +33,7 @@ const ViewTax = ({
   } = useTheme();
   const router = useRouter();
   const { id } = router.query;
-  const [currentChart, setCurrentChart] = useState("DOUGHNUT");
+  const [currentChart, setCurrentChart] = useState("BAR");
   const [label, setLabel] = useState<string>(
     new Date().getFullYear().toString()
   );
@@ -57,6 +60,7 @@ const ViewTax = ({
     min: formatDate(),
   });
   const [currentTaxes, setCurrentTaxes] = useState<ITax[]>(taxes);
+  const [currentTaxeType, setCurrentTaxeType] = useState(7);
   // const minDate = new Date()
   // const maxDate = new Date(minDate.setMonth(minDate.getMonth()+12));
 
@@ -69,6 +73,10 @@ const ViewTax = ({
 
   const handleChange = (ev: React.ChangeEvent<HTMLSelectElement>) => {
     setCurrentChart(ev.target.value);
+  };
+
+  const handleTypeTaxChange = (ev: React.ChangeEvent<HTMLSelectElement>) => {
+    setCurrentTaxeType(+ev.target.value);
   };
 
   const handleDate = (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,7 +134,13 @@ const ViewTax = ({
         });
         return;
       }
-      setTitle(`${getMonth(new Date(dateForm.from).getMonth())?.MM} ${new Date(dateForm.from).getFullYear()} - ${getMonth(new Date(dateForm.to).getMonth())?.MM} ${new Date(dateForm.to).getFullYear()}`)
+      setTitle(
+        `${getMonth(new Date(dateForm.from).getMonth())?.MM} ${new Date(
+          dateForm.from
+        ).getFullYear()} - ${
+          getMonth(new Date(dateForm.to).getMonth())?.MM
+        } ${new Date(dateForm.to).getFullYear()}`
+      );
       setCurrentTaxes(t as ITax[]);
     } else {
       let ids: number[] = [0];
@@ -154,9 +168,11 @@ const ViewTax = ({
         setCurrentTaxes(t as ITax[]);
       } else {
         const { taxes: t, error } = await fetchAllTaxesBetweenMonths(
+          currentTaxeType,
           f_date,
           t_date
         );
+        console.log()
         if (error) {
           console.error(error);
           toast.error(error.message, {
@@ -165,7 +181,7 @@ const ViewTax = ({
           });
           return;
         }
-        setCurrentTaxes(t as ITax[]);  
+        setCurrentTaxes(t as ITax[]);
       }
     }
   };
@@ -226,6 +242,17 @@ const ViewTax = ({
             </div>
             {id == "0" && (
               <div className="py-3 flex flex-col">
+                  <select
+                      className="dark:bg-slate-800 rounded-full border-2 border-blue-400 p-2 ml-1"
+                      id="taxtypeSelection"
+                      name="taxtypeSelection"
+                      value={currentTaxeType}
+                      onChange={handleTypeTaxChange}
+                    >
+                      {taxTypes.map(type => (
+                        <option key={type.id} value={type.id}>{type.name}</option>
+                      ))}
+                    </select>
                 <div className="flex items-center justify-center">
                   <span className="pr-2 text-lg">Total</span>
                   <PowerIcon
@@ -299,5 +326,8 @@ export async function getServerSideProps({
   const { id } = query;
   if (!id) return { props: { taxes: [], error: null } };
   const { taxes, error } = await fetchByYearAndTaxTypeId(id as string);
-  return { props: { taxes, error } };
+  const { data: taxTypes, error: err } = await supabase
+    .from("tax_type")
+    .select("*");
+  return { props: { taxes, error, taxTypes } };
 }

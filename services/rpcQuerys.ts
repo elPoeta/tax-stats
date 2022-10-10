@@ -37,12 +37,13 @@ export const fetchSumAllTaxesBetweenMonthsAndNotIn = async (
 };
 
 export const fetchAllTaxesBetweenMonths = async (
+  id_tax_type: number,
   f_date: string,
   t_date: string
 ) => {
   const rpcParams: [string, object] = [
     "all_taxes_between_months",
-    { f_date, t_date },
+    { id_tax_type, f_date, t_date },
   ];
   const { data: taxes, error } = await getRows(rpcParams);
   return { taxes, error };
