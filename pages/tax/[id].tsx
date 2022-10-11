@@ -240,7 +240,7 @@ const ViewTax = ({
                 />
               </label>
             </div>
-            {id == "0" && (
+            {/*id == "0" && (
               <div className="py-3 flex flex-col">
                   <select
                       className="dark:bg-slate-800 rounded-full border-2 border-blue-400 p-2 ml-1"
@@ -297,9 +297,9 @@ const ViewTax = ({
                       />
                     </div>
                   </div>
-                )}
+                      )} 
               </div>
-            )}
+            ) */}
             <div
               onClick={handleFind}
               className="flex items-center justify-center p-2 rounded-md border-2 border-[#0ea5e9] w-[150px] cursor-pointer"
