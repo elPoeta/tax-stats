@@ -46,6 +46,20 @@ group by  to_char(date,'Mon-YY'), tax.date order by tax.date;
 END
 $func$;
 
+DROP FUNCTION if exists sum_all_tax_between_months;
+CREATE OR REPLACE FUNCTION sum_all_tax_between_months(f_date date, t_date date)
+  RETURNS TABLE ( amount float) 
+  LANGUAGE plpgsql AS
+$func$
+BEGIN
+   RETURN QUERY
+SELECT sum(DISTINCT tax.amount) AS total
+FROM tax
+inner join tax_type on tax_type.id = tax.tax_type_id 
+WHERE tax.date >= f_date AND tax.date < t_date AND tax.tax_type_id <> ALL ('{8,9}');
+END
+$func$;
+
 -- TAX BY YEAR AND TAX TYPE ID
 
 DROP FUNCTION if exists tax_by_year_and_by_id;
@@ -96,3 +110,7 @@ inner join tax_type on tax_type.id = tax.tax_type_id
 WHERE tax.date >= '2022-01-01' AND tax.date < '2022-06-30' AND tax.tax_type_id NOT IN (8,9)
 group by  to_char(date,'Mon-YY'), tax.date order by tax_date;
  
+SELECT sum(DISTINCT tax.amount) AS total
+FROM tax
+inner join tax_type on tax_type.id = tax.tax_type_id 
+WHERE tax.date >= '2022-02-01' AND tax.date < '2022-09-28' AND tax.tax_type_id <> ALL ('{8,9}');
