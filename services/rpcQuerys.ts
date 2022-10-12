@@ -49,6 +49,18 @@ export const fetchAllTaxesBetweenMonths = async (
   return { taxes, error };
 };
 
+export const fetchSumAllTaxesBetweenMonths = async (
+  f_date: string,
+  t_date: string
+) => {
+  const rpcParams: [string, object] = [
+    "sum_all_tax_between_months",
+    { f_date, t_date },
+  ];
+  const { data: total, error } = await getRows(rpcParams);
+  return { total, error };
+};
+
 const getRows = async (rpcParams: [string, object]) => {
   const [fn, obj] = rpcParams;
   const { data, error } = await supabase.rpc(fn, obj);
