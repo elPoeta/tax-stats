@@ -172,7 +172,6 @@ const ViewTax = ({
           f_date,
           t_date
         );
-        console.log()
         if (error) {
           console.error(error);
           toast.error(error.message, {
@@ -240,7 +239,7 @@ const ViewTax = ({
                 />
               </label>
             </div>
-            {/*id == "0" && (
+            {id == "0" && (
               <div className="py-3 flex flex-col">
                   <select
                       className="dark:bg-slate-800 rounded-full border-2 border-blue-400 p-2 ml-1"
@@ -253,7 +252,7 @@ const ViewTax = ({
                         <option key={type.id} value={type.id}>{type.name}</option>
                       ))}
                     </select>
-                <div className="flex items-center justify-center">
+             {/*} <div className="flex items-center justify-center">
                   <span className="pr-2 text-lg">Total</span>
                   <PowerIcon
                     className={`w-6 h-6 cursor-pointer ${
@@ -265,8 +264,8 @@ const ViewTax = ({
                       })
                     }
                   />
-                </div>
-                {dateForm.enableTotal && (
+                  </div>*/}
+                {/*dateForm.enableTotal && (
                   <div className="py-3 flex flex-row justify-between">
                     <div className="flex items-center justify-center">
                       <span className="pr-2 text-lg">Enable Rodri</span>
@@ -297,9 +296,9 @@ const ViewTax = ({
                       />
                     </div>
                   </div>
-                      )} 
+                      )*/} 
               </div>
-            ) */}
+            ) }
             <div
               onClick={handleFind}
               className="flex items-center justify-center p-2 rounded-md border-2 border-[#0ea5e9] w-[150px] cursor-pointer"
