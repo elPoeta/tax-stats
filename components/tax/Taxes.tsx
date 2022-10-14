@@ -6,9 +6,9 @@ export const Taxes = ({ taxTypes }: { taxTypes: ITaxTypes[] }) => {
   const getIcon = (id: number): string => {
     switch (id) {
       case 0:
-        return "CalendarDaysIcon";
+        return "CurrencyDollarIcon";
       case 1:
-        return "CalculatorIcon";
+        return "BuildingOfficeIcon";
       case 2:
         return "BeakerIcon";
       case 3:

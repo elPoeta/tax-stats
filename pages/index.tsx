@@ -1,4 +1,5 @@
 import { ChartPieIcon, PlusCircleIcon } from "@heroicons/react/20/solid";
+import { CalculatorIcon } from "@heroicons/react/24/solid";
 import { NextApiRequest, NextPage } from "next";
 import Link from "next/link";
 import supabase from "../supabase/supabaseClient";
@@ -260,6 +261,14 @@ const Home: NextPage = () => {
             <a className="flex items-center justify-center">
               <ChartPieIcon className="h-10 w-10 fill-[#0ea5e9]"/>
               <span className="ml-2 font-bold">Taxes</span>
+            </a>
+          </Link>         
+        </div>
+        <div className="py-2 px-8 border-2 border-[#0ea5e9] rounded-md">
+          <Link href="/calculus">
+            <a className="flex items-center justify-center">
+              <CalculatorIcon className="h-10 w-10 fill-[#0ea5e9]"/>
+              <span className="ml-2 font-bold">Cálculos</span>
             </a>
           </Link>         
         </div>
