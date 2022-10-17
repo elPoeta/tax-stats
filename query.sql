@@ -60,6 +60,22 @@ WHERE tax.date >= f_date AND tax.date < t_date AND tax.tax_type_id <> ALL ('{8,9
 END
 $func$;
 
+DROP FUNCTION if exists get_taxes_by_month_and_year;
+CREATE OR REPLACE FUNCTION get_taxes_by_month_and_year(year_tax int, month_tax int)
+  RETURNS TABLE (tax_type_id bigint, name varchar, amount float, date date)
+  LANGUAGE plpgsql AS
+$func$
+BEGIN
+   RETURN QUERY
+SELECT tax.tax_type_id, tax_type.name, tax.amount, tax.date
+FROM tax
+inner join tax_type on tax_type.id = tax.tax_type_id 
+WHERE EXTRACT(year FROM tax.date) = year_tax AND EXTRACT(month FROM tax.date) = month_tax 
+order by tax_type.name;
+END
+$func$;
+
+
 -- TAX BY YEAR AND TAX TYPE ID
 
 DROP FUNCTION if exists tax_by_year_and_by_id;

@@ -2,13 +2,13 @@ import { CalendarDaysIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react'
+import { getMonth } from '../../../utils/dateUtils';
 
 const Year = () => {
   const router = useRouter();
   const { year } = router.query;
-  const MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   const countMonths = year  === (new Date().getFullYear()).toString() ? new Date().getMonth() + 1 : 12;
-  const CURRENT_MONTHS = Array.from({ length: countMonths }, (_, index) => MONTHS[index]);
+  const CURRENT_MONTHS = Array.from({ length: countMonths }, (_, index) => getMonth(index)!.MM);
   return (
     <section>
     <h2 className="text-3xl font-bold p-2 text-center">Cálculos - {year}</h2>
