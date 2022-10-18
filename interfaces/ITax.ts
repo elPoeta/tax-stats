@@ -13,4 +13,5 @@ export interface ITax {
   amount: number;
   date: string;
   mon?: string;
+  tax_type_id: number;
 }
