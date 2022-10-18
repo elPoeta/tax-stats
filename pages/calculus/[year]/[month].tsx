@@ -1,5 +1,4 @@
 import { PostgrestError } from '@supabase/supabase-js';
-import { useRouter } from 'next/router';
 import { NextRequest } from 'next/server';
 import React from 'react'
 import { toast } from 'react-toastify';
@@ -30,7 +29,13 @@ const Month = ({
     });
   }
 
-  console.log(taxes)
+  const total = () => taxes.filter(t => t.tax_type_id !== 8 && t.tax_type_id !== 9 ).reduce((acc, t) => acc + t.amount,0);
+
+  const totalRL = (id:number) => {
+    const index = taxes.findIndex(t => t.tax_type_id === id)
+    if(index < 0) return (total() / 2 ).toFixed(2) ;
+    return ((total() / 2 ) + taxes[index].amount).toFixed(2); 
+  }
 
   return (
     <div>
@@ -49,6 +54,28 @@ const Month = ({
             <h4 className='h-[40px] text-center flex items-center justify-center'>{tax.amount}</h4>
           </div>
         ))}
+      </div>
+      <div className='mt-3 mb-5 flex flex-col border-t-2 border-l-2 border-r-2 rounded-md border-[#0ea5e9] w-[100%] md:w-[80%] lg:w-[60%] container my-0 mx-auto'>
+        <div className='grid grid-cols-[60%_40%] text-xl items-center justify-center border-b-2 border-[#0ea5e9] font-bold text-[#0ea5e9] h-[40px]'> 
+          <h4 className='h-[40px] border-r-2  border-[#0ea5e9] text-center flex items-center justify-center'>Totales</h4>
+          <h4 className='h-[40px] text-center flex items-center justify-center'>Monto</h4>
+        </div>
+        <div  className='grid grid-cols-[60%_40%] text-xl items-center justify-center border-b-2 border-[#0ea5e9] rounded-md font-semibold'>
+            <h4 className='h-[40px] border-r-2  border-[#0ea5e9] text-center flex items-center justify-center'>Total</h4>
+            <h4 className='h-[40px] text-center flex items-center justify-center'>{total().toFixed(2)}</h4>
+        </div>
+        <div  className='grid grid-cols-[60%_40%] text-xl items-center justify-center border-b-2 border-[#0ea5e9] rounded-md font-semibold'>
+            <h4 className='h-[40px] border-r-2  border-[#0ea5e9] text-center flex items-center justify-center'>Sub-Total</h4>
+            <h4 className='h-[40px] text-center flex items-center justify-center'>{(total() / 2).toFixed(2)}</h4>
+        </div>
+        <div  className='grid grid-cols-[60%_40%] text-xl items-center justify-center border-b-2 border-[#0ea5e9] rounded-md font-semibold'>
+            <h4 className='h-[40px] border-r-2  border-[#0ea5e9] text-center flex items-center justify-center'>Rodri</h4>
+            <h4 className='h-[40px] text-center flex items-center justify-center'>{totalRL(9)}</h4>
+        </div>
+        <div  className='grid grid-cols-[60%_40%] text-xl items-center justify-center border-b-2 border-[#0ea5e9] rounded-md font-semibold'>
+            <h4 className='h-[40px] border-r-2  border-[#0ea5e9] text-center flex items-center justify-center'>Leo</h4>
+            <h4 className='h-[40px] text-center flex items-center justify-center'>{totalRL(8)}</h4>
+        </div>
       </div>
     </div>
   )

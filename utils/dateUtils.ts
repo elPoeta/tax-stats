@@ -19,7 +19,7 @@ export const getMonth = (
     case 7:
       return { mm: "08", MM: "Agosto", n: 8 };
     case 8:
-      return { mm: "09", MM: "Septiempbre", n: 9 };
+      return { mm: "09", MM: "Septiembre", n: 9 };
     case 9:
       return { mm: "10", MM: "Octubre", n: 10 };
     case 10:
@@ -49,7 +49,7 @@ export const getMonthNumber = (month: string): { n: number } => {
       return { n: 7 };
     case "agosto":
       return { n: 8 };
-    case "septimbre":
+    case "septiembre":
       return { n: 9 };
     case "octubre":
       return { n: 10 };
