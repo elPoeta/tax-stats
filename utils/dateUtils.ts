@@ -58,7 +58,7 @@ export const getMonthNumber = (month: string): { n: number } => {
     case "diciembre":
       return { n: 12 };
     default:
-      return { n: 1 };
+      return { n: 13 };
   }
 };
 

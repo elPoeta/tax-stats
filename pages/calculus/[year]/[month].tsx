@@ -1,5 +1,4 @@
 import { PostgrestError } from "@supabase/supabase-js";
-import { NextRequest } from "next/server";
 import React from "react";
 import { toast } from "react-toastify";
 import { useTheme } from "../../../context/theme/useTheme";
