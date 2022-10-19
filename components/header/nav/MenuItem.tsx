@@ -3,7 +3,8 @@ import { useAuth } from "../../../context/auth/useAuth";
 
 const items = [
   { id: "menu-item-home", title: "Home", path: '/' },
-  { id: "menu-item-project", title: "Tax", path: '/tax' },
+  { id: "menu-item-taxes", title: "Tax", path: '/tax' },
+  { id: "menu-item-calculus", title: "Cálculos", path: '/calculus' },
   { id: "menu-item-sign", title: "Login", path: '/signin' }
 ];
 
