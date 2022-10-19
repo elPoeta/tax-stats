@@ -16,6 +16,7 @@ import {
   fetchBetweenMonthAnTaxTypeById,
   fetchByYearAndTaxTypeId,
   fetchAllTaxesBetweenMonths,
+  fetchAllByYear,
 } from "../../services/rpcQuerys";
 import supabase from "../../supabase/supabaseClient";
 
@@ -324,7 +325,10 @@ export async function getServerSideProps({
 }) {
   const { id } = query;
   if (!id) return { props: { taxes: [], error: null } };
-  const { taxes, error } = await fetchByYearAndTaxTypeId(id as string);
+  const year = new Date().getFullYear();
+  const { taxes, error } = id !== '0' 
+  ? await fetchByYearAndTaxTypeId(id as string,  year)
+  : await fetchAllByYear(year);
   const { data: taxTypes, error: err } = await supabase
     .from("tax_type")
     .select("*");

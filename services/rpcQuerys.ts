@@ -1,11 +1,16 @@
 import supabase from "../supabase/supabaseClient";
 
-export const fetchByYearAndTaxTypeId = async (id: string) => {
-  const year = new Date().getFullYear();
-  const rpcParams: [string, object] =
-    id == "0"
-      ? ["all_tax_by_year", { year_tax: year }]
-      : ["tax_by_year_and_by_id", { year_tax: year, id_tax_type: id }];
+export const fetchByYearAndTaxTypeId = async (id: string, year: number) => {
+  const rpcParams: [string, object] = [
+    "tax_by_year_and_by_id",
+    { year_tax: year, id_tax_type: id },
+  ];
+  const { data: taxes, error } = await getRows(rpcParams);
+  return { taxes, error };
+};
+
+export const fetchAllByYear = async (year: number) => {
+  const rpcParams: [string, object] = ["all_tax_by_year", { year_tax: year }];
   const { data: taxes, error } = await getRows(rpcParams);
   return { taxes, error };
 };
