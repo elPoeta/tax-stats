@@ -9,7 +9,7 @@ export const getMonth = (
     case 2:
       return { mm: "03", MM: "Marzo", n: 3 };
     case 3:
-      return { mm: "04", MM: "Apbil", n: 4 };
+      return { mm: "04", MM: "Abril", n: 4 };
     case 4:
       return { mm: "05", MM: "Mayo", n: 5 };
     case 5:
