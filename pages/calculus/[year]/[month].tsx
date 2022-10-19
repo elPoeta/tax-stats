@@ -3,7 +3,7 @@ import React from "react";
 import { toast } from "react-toastify";
 import { useTheme } from "../../../context/theme/useTheme";
 import { ITax } from "../../../interfaces/ITax";
-import { fetchTaxesByMonthAndYear } from "../../../services/rpcQuerys";
+import { fetchAllByYear, fetchTaxesByMonthAndYear } from "../../../services/rpcQuerys";
 import { getMonthNumber } from "../../../utils/dateUtils";
 
 const Month = ({
@@ -126,10 +126,13 @@ export default Month;
 
 export async function getServerSideProps(context: any) {
   const { year, month } = context.query;
-  const { taxes, error } = await fetchTaxesByMonthAndYear({
+  const m = getMonthNumber(month).n
+  const { taxes, error } = m !== 13 
+    ? await fetchTaxesByMonthAndYear({
     year: parseInt(year),
-    month: getMonthNumber(month).n,
-  });
+    month: m,
+  })
+  : await fetchAllByYear(year);
   if (error) {
     return {
       props: {
